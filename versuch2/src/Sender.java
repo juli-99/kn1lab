@@ -1,6 +1,7 @@
 import java.io.*;
 import java.net.*;
 import java.time.Duration;
+import java.util.Scanner;
 import java.util.concurrent.*;
 
 /**
@@ -30,31 +31,58 @@ public class Sender {
      * @throws IOException Wird geworfen falls Sockets nicht erzeugt werden können.
      */
     private void send() throws IOException {
-/*   	//Text einlesen und in Worte zerlegen
+        //Text einlesen und in Worte zerlegen
+        Scanner scan = new Scanner(System.in);
+        String str = scan.nextLine();
+        str += " EOT";
+        String[] str_arr = str.split(" ");
 
         // Socket erzeugen auf Port 9998 und Timeout auf eine Sekunde setzen
+        DatagramSocket clientSocket = new DatagramSocket(9998);
+        clientSocket.setSoTimeout(1000);
 
         // Iteration über den Konsolentext
-        while (true) {
-        	// Paket an Port 9997 senden
-        	
-            try {
-                // Auf ACK warten und erst dann Schleifenzähler inkrementieren
+        int c = 1;
+        for (String s : str_arr) {
+            // create new packet
+            Packet packetOut = new Packet(c, 1, true, s.getBytes());
 
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (SocketTimeoutException e) {
-            	System.out.println("Receive timed out, retrying...");
-            }
+            // serialize Packet for sending
+            ByteArrayOutputStream b = new ByteArrayOutputStream();
+            ObjectOutputStream o = new ObjectOutputStream(b);
+            o.writeObject(packetOut);
+            byte[] send_buf = b.toByteArray();
+
+            DatagramPacket dataPacket = new DatagramPacket(send_buf, send_buf.length, InetAddress.getLocalHost(), 9997);
+
+            int ackNum = -1;
+            c += send_buf.length;
+            // Paket an Port 9997 senden
+            do {
+                clientSocket.send(dataPacket);
+                try {
+                    // Auf ACK warten und erst dann Schleifenzähler inkrementieren
+                    byte[] res_buf = new byte[256];
+                    DatagramPacket rcvPacketRaw = new DatagramPacket(res_buf, res_buf.length);
+                    clientSocket.receive(rcvPacketRaw);
+                    // deserialize Packet
+                    ObjectInputStream is = new ObjectInputStream(new ByteArrayInputStream(rcvPacketRaw.getData()));
+                    Packet packetIn = (Packet) is.readObject();
+                    ackNum = packetIn.getAckNum();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                } catch (SocketTimeoutException e) {
+                    System.out.println("Receive timed out, retrying...");
+                }
+            } while (ackNum < c);
         }
-        
+
         // Wenn alle Packete versendet und von der Gegenseite bestätigt sind, Programm beenden
         clientSocket.close();
-        
+
         if(System.getProperty("os.name").equals("Linux")) {
             clientSocket.disconnect();
         }
-*/
         System.exit(0);
     }
 }

@@ -30,18 +30,36 @@ public class Sender {
      * @throws IOException Wird geworfen falls Sockets nicht erzeugt werden können.
      */
     private void send() throws IOException {
-/*   	//Text einlesen und in Worte zerlegen
+   	//Text einlesen und in Worte zerlegen
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("Enter data");
+        String input = br.readLine();
+        String[] words = input.split(" ");
 
         // Socket erzeugen auf Port 9998 und Timeout auf eine Sekunde setzen
-
+        DatagramSocket clientSocket = new DatagramSocket(9998);
+        clientSocket.setSoTimeout(1000);
         // Iteration über den Konsolentext
+        int i=0;
+
         while (true) {
         	// Paket an Port 9997 senden
-        	
+        	if(i == words.length) break;
             try {
                 // Auf ACK warten und erst dann Schleifenzähler inkrementieren
 
-            } catch (ClassNotFoundException e) {
+                Packet packetOut = new Packet(i,0,false,words[i].getBytes());
+
+                // serialize Packet for sending
+                ByteArrayOutputStream b = new ByteArrayOutputStream();
+                ObjectOutputStream o = new ObjectOutputStream(b);
+                o.writeObject(packetOut);
+                byte[] buf = b.toByteArray();
+
+                clientSocket.send(new DatagramPacket(buf, buf.length, InetAddress.getLocalHost(), 9997));
+                i++;
+            } /*catch (ClassNotFoundException e) {
                 e.printStackTrace();
             } catch (SocketTimeoutException e) {
             	System.out.println("Receive timed out, retrying...");
@@ -54,7 +72,7 @@ public class Sender {
         if(System.getProperty("os.name").equals("Linux")) {
             clientSocket.disconnect();
         }
-*/
+
         System.exit(0);
     }
 }

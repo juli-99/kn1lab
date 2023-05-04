@@ -56,7 +56,7 @@ public class Sender {
             DatagramPacket dataPacket = new DatagramPacket(send_buf, send_buf.length, InetAddress.getLocalHost(), 9997);
 
             int ackNum = -1;
-            c += send_buf.length;
+            c += s.length();
             // Paket an Port 9997 senden
             do {
                 clientSocket.send(dataPacket);

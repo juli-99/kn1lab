@@ -16,4 +16,4 @@ From 10.0.0.1 icmp_seq=4 Destination Net Unreachable
 --- 10.0.1.2 ping statistics ---
 5 packets transmitted, 0 received, +4 errors, 100% packet loss, time 86ms
 
-2.5 32-bit Adressen -> /25 -> 7 frei wählbare bits -> 2⁷ = 128 Adressen
+2.1 32-bit Adressen -> /25 -> 7 frei wählbare bits -> 2⁷ = 128 Adressen

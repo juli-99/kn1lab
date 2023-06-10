@@ -1,0 +1,2 @@
+3 Beide Verbindungen erhalten die halbe Bandbreite -> fair
+4 Die UDP Verbindung nimmt sich so viel Bandbreite wie möglich

@@ -1,0 +1,4 @@
+iperf3 -c 10.11.0.3 -Z -t 60 -u -b 1M
+cpunetlog -l --nics c1-eth1
+cpunetlog -l --nics sv1-eth1 sv1-eth2
+

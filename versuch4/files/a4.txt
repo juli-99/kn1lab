@@ -1,0 +1,39 @@
+Client:
+=== Summary ===
+Filename:  2023-06-12_01:20:15-kn1-lab.cnl
+Comment:   
+Hostname:  kn1-lab
+Kernel:    4.19.0-22-amd64
+
+Start:     2023-06-12_01:20:16
+End:       2023-06-12_01:21:31
+Duration:  75
+
+CPUs: CPU0, CPU1
+NICs: c1-eth1
+
+== Average transmission rates ==
+c1-eth1.send:       0.77 MBits/s
+c1-eth1.receive:        0.0 MBits/s
+
+
+Server:
+=== Summary ===
+Filename:  2023-06-12_01:20:14-kn1-lab.cnl
+Comment:   
+Hostname:  kn1-lab
+Kernel:    4.19.0-22-amd64
+
+Start:     2023-06-12_01:20:14
+End:       2023-06-12_01:21:31
+Duration:  77
+
+CPUs: CPU0, CPU1
+NICs: sv1-eth1
+
+== Average transmission rates ==
+sv1-eth1.send:        0.0 MBits/s
+sv1-eth1.receive:       0.67 MBits/s
+
+
+Client hat mehr gesendet als beim Server angekommen ist, weil UDP keine Zuverlässigkeit garantiert
